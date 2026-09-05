@@ -1,0 +1,15 @@
+# ComfyUI 额外模型路径配置:让 ComfyUI 能找到 ComfyUI-Shared 里的模型
+# (桌面版启动时自动注入;用脚本无头启动时通过 --extra-model-paths-config 指定本文件)
+comfyui_shared:
+  base_path: D:/Comfy-Desktop/ComfyUI-Shared/models
+  checkpoints: checkpoints
+  diffusion_models: diffusion_models
+  unet: unet
+  text_encoders: text_encoders
+  clip: clip
+  clip_vision: clip_vision
+  vae: vae
+  loras: loras
+  upscale_models: upscale_models
+  controlnet: controlnet
+  embeddings: embeddings
