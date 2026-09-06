@@ -26,6 +26,21 @@ CLIENT_ID = "zcode_comfy_gen"
 
 NEG_DEFAULT = "text, watermark, low quality, blurry, deformed hands, ugly"
 
+
+def _fix_windows_console():
+    """cmd 默认 GBK 代码页,切到 UTF-8 避免中文输出乱码。"""
+    try:
+        import ctypes
+        ctypes.windll.kernel32.SetConsoleOutputCP(65001)
+        ctypes.windll.kernel32.SetConsoleCP(65001)
+    except Exception:
+        pass
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # ---------------------------------------------------------------------------
 # 多风格预设:风格词用英文(SDXL 响应更准),内容词可中文。
 # 每个风格自带:英文风格关键词 suffix、需排除的干扰项 negative_add、建议尺寸。
@@ -128,11 +143,8 @@ def merge_style(prompt, negative, style_key):
 
 
 def main():
-    # Windows 控制台中文输出兜底
-    try:
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
+    global SERVER
+    _fix_windows_console()
 
     ap = argparse.ArgumentParser(
         description="ComfyUI SDXL text2img — AI 辅助多风格绘图",
@@ -141,6 +153,7 @@ def main():
     ap.add_argument("--negative", "-n", default=NEG_DEFAULT, help="负向提示词(会与风格排除项合并)")
     ap.add_argument("--style", "-s", default="none", choices=sorted(STYLES),
                     help="风格预设 (默认 none,--list-styles 查看)")
+    ap.add_argument("--server", default=SERVER, help="ComfyUI 地址 host:port (默认 127.0.0.1:8188)")
     ap.add_argument("--checkpoint", default="sd_xl_base_1.0.safetensors", help="模型文件名")
     ap.add_argument("--width", type=int, default=None, help="默认取风格建议尺寸")
     ap.add_argument("--height", type=int, default=None)
@@ -153,6 +166,7 @@ def main():
     ap.add_argument("--list-styles", action="store_true")
     ap.add_argument("--list-checkpoints", action="store_true")
     args = ap.parse_args()
+    SERVER = args.server
 
     if args.list_styles:
         print(f"{'参数取值':<12}{'名称':<8}建议尺寸   说明")
