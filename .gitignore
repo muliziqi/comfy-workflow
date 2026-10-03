@@ -1,3 +1,10 @@
 output/
 __pycache__/
 *.pyc
+.venv/
+*.safetensors
+*.pt
+*.part
+会话总结.md
+Thumbs.db
+.DS_Store

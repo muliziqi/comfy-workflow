@@ -1,5 +1,9 @@
-# ComfyUI 额外模型路径配置:让 ComfyUI 能找到 ComfyUI-Shared 里的模型
+# ComfyUI 额外模型路径配置:让 ComfyUI 能找到共享模型目录
 # (桌面版启动时自动注入;用脚本无头启动时通过 --extra-model-paths-config 指定本文件)
+#
+# ★ base_path 按本机修改:指向你的共享模型根目录,
+#   其下应含 checkpoints / vae / loras 等子目录(Windows 路径建议写正斜杠 /)。
+#   改完可用 scripts/comfy_gen.py --list-checkpoints 验证模型是否挂载成功。
 comfyui_shared:
   base_path: D:/Comfy-Desktop/ComfyUI-Shared/models
   checkpoints: checkpoints
